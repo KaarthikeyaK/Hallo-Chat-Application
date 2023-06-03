@@ -9,8 +9,8 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @State var email = ""
-    @State var password = ""
+    @StateObject var viewModel = LoginViewViewModel()
+    
     
     var body: some View {
         
@@ -18,25 +18,31 @@ struct LoginView: View {
             // Upload Profile Image Action
         } label: {
             VStack{
-                TextField("Email", text: $email)
+                TextField("Email", text: $viewModel.email)
                     .keyboardType(.emailAddress)
                     .autocorrectionDisabled()
+                    .multilineTextAlignment(.leading)
                     .padding(12)
                     .autocapitalization(.none)
                     .background(Color(hex: 0xf7f5f5))
                     .cornerRadius(10)
                     .frame(width: UIScreen.main.bounds.width - 40)
-                SecureField("Password", text: $password)
+                SecureField("Password", text: $viewModel.password)
                     .padding(12)
                     .autocorrectionDisabled()
                     .autocapitalization(.none)
+                    .multilineTextAlignment(.leading)
                     .background(Color(hex: 0xf7f5f5))
                     .cornerRadius(10)
                     .frame(width: UIScreen.main.bounds.width - 40)
                 
                 HalloButton(title: "Login", background: .blue) {
-                    // Create Account Action
+                    viewModel.loginUser()
                 }
+                
+                Text(viewModel.errorMessage)
+                    .padding()
+                    .foregroundColor(.red)
             }
         }
     }
